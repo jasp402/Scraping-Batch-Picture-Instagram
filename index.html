@@ -1,440 +1,305 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-    <title>Instagram Image and Video Saver</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="assets/css/tailwind_1.4.6.css">
-    <link rel="stylesheet" href="assets/css/tagify.css">
-    <script src="./assets/js/tagify.min.js"></script>
-</head>
-
-<body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
-<div class="h-screen w-full flex overflow-hidden">
-    <nav aria-label="SideNavBar"
-         class="flex flex-col bg-gray-200 dark:bg-gray-900 w-64 px-12 pt-4 pb-6">
-        <div class="flex flex-row border-b items-center justify-between pb-2">
-            <!-- Hearder -->
-            <span class="text-lg font-semibold capitalize dark:text-gray-300">
-                SBP-Instagram
-			</span>
-
-            <span class="relative">
-				<a
-                        class="hover:text-green-500 dark-hover:text-green-300
-					text-gray-600 dark:text-gray-300"
-                        href="inbox/">
-					<svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round">
-						<path
-                                d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-						<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-					</svg>
-				</a>
-				<div role="separator" class="absolute w-2 h-2 rounded-full bg-green-500 dark-hover:bg-green-300 right-0 mb-5 bottom-0"></div>
-			</span>
-
-        </div>
-        <div class="mt-8 md:flex">
-            <!-- User info -->
-            <img
-                    class="md:h-24 md:w-24 rounded-full mx-auto md:mx-0 object-cover"
-                    src="./assets/img/username.png"
-                    alt="profile"/>
-            <div class="text-center md:text-left pl-2 mt-4">
-                <h2 class="text-lg">Download-Bot</h2>
-                <div class="text-purple-500">⚡ Bot</div>
-            </div>
-        </div>
-        <ul class="mt-2 text-gray-600">
-            <!-- Links -->
-            <li id="startDownload"
-                class="opacity-50 cursor-not-allowed
-                     mt-8 shadow py-2 text-white
-			dark:text-gray-200 bg-green-400 dark:bg-green-500 rounded-lg shadow
-				-ml-4">
-                <a href="#" class="flex pl-4">
-                    <svg viewBox="0 0 20 20" fill="currentColor" class="download w-6 h-6">
-                        <path fill-rule="evenodd"
-                              d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                              clip-rule="evenodd"></path>
-                    </svg>
-                    <span class="ml-2 capitalize font-medium">Start Download</span>
-                </a>
-            </li>
-
-            <li onclick="openModal('main-modal-account')"
-                class="mt-8 shadow py-2 text-white
-			dark:text-gray-200 bg-green-400 dark:bg-green-500 rounded-lg shadow
-				-ml-4">
-                <a href="#" class="flex pl-4">
-                    <svg class="fill-current h-5 w-5" viewBox="0 0 24 24">
-                        <path
-                                d="M12 4a4 4 0 014 4 4 4 0 01-4 4 4 4 0 01-4-4 4 4 0
-							014-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4
-							8-4z"></path>
-                    </svg>
-                    <span class="ml-2 capitalize font-medium">Add Account</span>
-                </a>
-            </li>
-
-            <li onclick="openModal('main-modal-login')"
-                class="mt-8 shadow py-2 bg-white dark:bg-gray-200 rounded-lg
-				-ml-4">
-                <a href="#" class="flex pl-4">
-                    <svg class="fill-current h-5 w-5" viewBox="0 0 24 24">
-                        <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
-                    </svg>
-                    <span class="ml-2 capitalize font-medium">login</span>
-                </a>
-            </li>
-
-            <li class="mt-8" id="dirs">
-                <a href="#" class="flex">
-                    <svg
-                            class="fill-current h-5 w-5 dark:text-gray-300"
-                            viewBox="0 0 24 24">
-                        <path
-                                d="M12 13H7v5h5v2H5V10h2v1h5v2M8
-							4v2H4V4h4m2-2H2v6h8V2m10 9v2h-4v-2h4m2-2h-8v6h8V9m-2
-							9v2h-4v-2h4m2-2h-8v6h8v-6z"></path>
-                    </svg>
-                    <span
-                            id="path"
-                            class="ml-2 capitalize font-medium text-black
-						dark:text-gray-300">
-						Select Folder
+	<head>
+		<title>Instagram Image and Video Backup</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="assets/css/tailwind_1.4.6.css">
+		<link rel="stylesheet" href="assets/css/tagify.css">
+		<script src="./assets/js/tagify.min.js"></script>
+	</head>
+	<body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
+		<div class="h-screen w-full flex overflow-hidden">
+			<!-- SideNavBar: Logo / appName / Options: [ StartDownload | SetAccount | Login Session | SetPath ] --->
+			<nav aria-label="SideNavBar" class="flex flex-col bg-gray-200 dark:bg-gray-900 w-64 px-12 pt-4 pb-6">
+				<!-- appName + notifications -->
+				<div class="flex flex-row border-b items-center justify-between pb-2">
+					<span class="text-lg font-semibold capitalize dark:text-gray-300">
+						InstamBackup
 					</span>
-                </a>
-            </li>
+					<span class="relative">
+						<a class="hover:text-green-500 dark-hover:text-green-300 text-gray-600 dark:text-gray-300" href="#">
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+								<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+							</svg>
+						</a>
+						<div role="separator" class="absolute w-2 h-2 rounded-full bg-green-500 dark-hover:bg-green-300 right-0 mb-5 bottom-0"></div>
+					</span>
+				</div>
+				<!-- User info -->
+				<div class="mt-8 md:flex">
+					<img class="md:h-24 md:w-24 rounded-full mx-auto md:mx-0 object-cover"
+						 src="./assets/img/username.png" alt="profile"/>
+					<div class="text-center md:text-left pl-2 mt-4">
+						<h2 class="text-lg">Download-Bot</h2>
+						<div class="text-purple-500">⚡ Bot</div>
+					</div>
+				</div>
+				<ul class="mt-2 text-gray-600">
+					<!-- Links -->
+					<li id="startDownload"
+						class="opacity-50 cursor-not-allowed mt-8 shadow py-2 text-white dark:text-gray-200 bg-green-400 dark:bg-green-500 rounded-lg shadow-ml-4">
+						<a href="#" class="flex pl-4">
+							<svg viewBox="0 0 20 20" fill="currentColor" class="download w-6 h-6">
+								<path fill-rule="evenodd"
+									  d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+									  clip-rule="evenodd"></path>
+							</svg>
+							<span class="ml-2 capitalize font-medium">Start Download</span>
+						</a>
+					</li>
+					<li onclick="openModal('main-modal-account')"
+						class="mt-8 shadow py-2 text-white dark:text-gray-200 bg-green-400 dark:bg-green-500 rounded-lg shadow-ml-4">
+						<a href="#" class="flex pl-4">
+							<svg class="fill-current h-5 w-5" viewBox="0 0 24 24">
+								<path d="M12 4a4 4 0 014 4 4 4 0 01-4 4 4 4 0 01-4-4 4 4 0 014-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4z"></path>
+							</svg>
+							<span class="ml-2 capitalize font-medium">Add Account</span>
+						</a>
+					</li>
 
-        </ul>
+					<li onclick="openModal('main-modal-login')"
+						class="mt-8 shadow py-2 bg-white dark:bg-gray-200 rounded-lg-ml-4">
+						<a href="#" class="flex pl-4">
+							<svg class="fill-current h-5 w-5" viewBox="0 0 24 24">
+								<path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
+							</svg>
+							<span class="ml-2 capitalize font-medium">login</span>
+						</a>
+					</li>
 
-        <div class="mt-auto flex items-center text-red-700 dark:text-red-400">
-            <!-- important action -->
-            <a href="#" class="flex items-center">
-                <svg class="fill-current h-5 w-5" viewBox="0 0 24 24">
-                    <path
-                            d="M16 17v-3H9v-4h7V7l5 5-5 5M14 2a2 2 0 012
-						2v2h-2V4H5v16h9v-2h2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2
-						0 012-2h9z"></path>
-                </svg>
-                <span class="ml-2 capitalize font-medium">Delete Data</span>
-            </a>
-
-        </div>
-    </nav>
-    <main
-            class="flex-1 flex flex-col bg-gray-100 dark:bg-gray-700 transition
-		duration-500 ease-in-out overflow-y-auto">
-        <div class="mx-10 my-2" id="wrapCard">
-            <nav aria-label="wrapCard" class="flex flex-row justify-between border-b
-				dark:border-gray-600 dark:text-gray-400 transition duration-500
-				ease-in-out">
-                <div class="flex">
-                    <!-- Top NavBar -->
-
-                    <a
-                            href="#"
-                            class="py-2 block text-green-500 border-green-500
-						dark:text-green-200 dark:border-green-200
-						focus:outline-none border-b-2 font-medium capitalize
-						transition duration-500 ease-in-out">
-                        users
-                    </a>
-                    <button
-                            class="ml-6 py-2 block border-b-2 border-transparent
-						focus:outline-none font-medium capitalize text-center
-						focus:text-green-500 focus:border-green-500
-						dark-focus:text-green-200 dark-focus:border-green-200
-						transition duration-500 ease-in-out">
-                        Log
-                    </button>
-                    <button
-                            class="ml-6 py-2 block border-b-2 border-transparent
-						focus:outline-none font-medium capitalize text-center
-						focus:text-green-500 focus:border-green-500
-						dark-focus:text-green-200 dark-focus:border-green-200
-						transition duration-500 ease-in-out">
-                        ScreenShot
-                    </button>
-                </div>
-
-                <div class="flex items-center select-none">
-					<span class="hover:text-green-500 dark-hover:text-green-300 cursor-pointer mr-3 transition duration-500 ease-in-out">
-						<svg viewBox="0 0 512 512" class="h-5 w-5 fill-current">
-							<path d="M505 442.7L405.3
-								343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7
-								44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1
-								208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4
-								2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9
-								0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7
-								0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0
-								128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+					<li class="mt-8" id="dirs">
+						<a href="#" class="flex">
+							<svg class="fill-current h-5 w-5 dark:text-gray-300" viewBox="0 0 24 24">
+								<path d="M12 13H7v5h5v2H5V10h2v1h5v2M8 4v2H4V4h4m2-2H2v6h8V2m10 9v2h-4v-2h4m2-2h-8v6h8V9m-2 9v2h-4v-2h4m2-2h-8v6h8v-6z"></path>
+							</svg>
+							<span id="path" class="ml-2 capitalize font-medium text-black dark:text-gray-300">
+								Select Folder
+							</span>
+						</a>
+					</li>
+				</ul>
+				<div class="mt-auto flex items-center text-red-700 dark:text-red-400">
+					<!-- important action -->
+					<a href="#" class="flex items-center">
+						<svg class="fill-current h-5 w-5" viewBox="0 0 24 24">
+							<path d="M16 17v-3H9v-4h7V7l5 5-5 5M14 2a2 2 0 012 2v2h-2V4H5v16h9v-2h2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h9z"></path>
 						</svg>
-					</span>
-                    <label>
-                        <input class="w-12 bg-transparent focus:outline-none" placeholder="Search"/>
-                    </label>
+						<span class="ml-2 capitalize font-medium">Delete Data</span>
+					</a>
+				</div>
+			</nav>
+			<!-- /SideNavBar -->
 
-                </div>
-
-            </nav>
-            <h2 class="my-4 text-4xl font-semibold dark:text-gray-400">
-                Accounts
-            </h2>
-            <div
-                    class="pb-2 flex items-center justify-between text-gray-600
-				dark:text-gray-400 border-b dark:border-gray-600">
-                <!-- Header -->
-
-                <div>
-					<span>
-						<span class="text-green-500 dark:text-green-200">
-							0
-						</span>
-						Accounts;
-					</span>
-                    <span>
-						<span class="text-green-500 dark:text-green-200">
-							0
-						</span>
-						Pictures;
-					</span>
-                    <span>
-						<span class="text-green-500 dark:text-green-200">
-							0
-						</span>
-						Videos
-					</span>
-                </div>
-
-
-            </div>
-            <div
-                    class="mt-6 flex justify-between text-gray-600 dark:text-gray-400">
-                <!-- List sorting -->
-
-                <div class="ml-10 pl-2 flex capitalize">
-                    <!-- Left side -->
-                    <span class="ml-8 flex items-center text-gray-500">
+			<main class="flex-1 flex flex-col bg-gray-100 dark:bg-gray-700 transition duration-500 ease-in-out overflow-y-auto">
+				<div class="mx-10 my-2" id="wrapCard">
+					<nav aria-label="wrapCard" class="flex flex-row justify-between border-b dark:border-gray-600 dark:text-gray-400 transition duration-500 ease-in-out">
+						<div class="flex">
+							<!-- Top NavBar -->
+							<a href="#" class="py-2 block text-green-500 border-green-500 dark:text-green-200 dark:border-green-200 focus:outline-none border-b-2 font-medium capitalize transition duration-500 ease-in-out">
+								users
+							</a>
+							<button class="ml-6 py-2 block border-b-2 border-transparent focus:outline-none font-medium capitalize text-center focus:text-green-500 focus:border-green-500 dark-focus:text-green-200 dark-focus:border-green-200 transition duration-500 ease-in-out">
+								Log
+							</button>
+							<button class="ml-6 py-2 block border-b-2 border-transparent focus:outline-none font-medium capitalize text-center focus:text-green-500 focus:border-green-500 dark-focus:text-green-200 dark-focus:border-green-200 transition duration-500 ease-in-out">
+								ScreenShot
+							</button>
+						</div>
+						<div class="flex items-center select-none">
+							<span class="hover:text-green-500 dark-hover:text-green-300 cursor-pointer mr-3 transition duration-500 ease-in-out">
+								<svg viewBox="0 0 512 512" class="h-5 w-5 fill-current">
+									<path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+								</svg>
+							</span>
+							<label>
+								<input class="w-12 bg-transparent focus:outline-none" placeholder="Search"/>
+							</label>
+						</div>
+					</nav>
+					<h2 class="my-4 text-4xl font-semibold dark:text-gray-400">
 						Accounts
-						<svg
-                                class="ml-1 h-5 w-5 fill-current text-green-500
-							dark:text-green-200"
-                                viewBox="0 0 24 24">
-							<path
-                                    d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2
-								19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
-						</svg>
-					</span>
-                    <span class="ml-24 flex items-center text-gray-500">
-						Posts
-						<svg
-                                class="ml-1 h-5 w-5 fill-current"
-                                viewBox="0 0 24 24">
-							<path
-                                    d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2
-								19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
-						</svg>
-					</span>
-                </div>
+					</h2>
+					<div class="pb-2 flex items-center justify-between text-gray-600 dark:text-gray-400 border-b dark:border-gray-600">
+						<!-- Header -->
+						<div>
+							<span>
+								<span class="text-green-500 dark:text-green-200">
+									0
+								</span>
+								Accounts
+							</span>
+							<span>
+								<span class="text-green-500 dark:text-green-200">
+									0
+								</span>
+								Pictures
+							</span>
+							<span>
+								<span class="text-green-500 dark:text-green-200">
+									0
+								</span>
+								Videos
+							</span>
+						</div>
+					</div>
+					<div class="mt-6 flex justify-between text-gray-600 dark:text-gray-400">
+						<!-- List sorting -->
+						<div class="ml-10 pl-2 flex capitalize">
+							<!-- Left side -->
+							<span class="ml-8 flex items-center text-gray-500">
+								Accounts
+								<svg class="ml-1 h-5 w-5 fill-current text-green-500 dark:text-green-200" viewBox="0 0 24 24">
+									<path d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2 19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
+								</svg>
+							</span>
+							<span class="ml-24 flex items-center text-gray-500">
+								Posts
+								<svg class="ml-1 h-5 w-5 fill-current" viewBox="0 0 24 24">
+									<path d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2 19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
+								</svg>
+							</span>
+						</div>
+						<div class="mr-12 flex capitalize">
+							<!-- Right side -->
+							<span class="mr-16 pr-2 flex items-center text-gray-500">
+								role
+								<svg class="ml-1 h-5 w-5 fill-current" viewBox="0 0 24 24">
+									<path d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2 19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
+								</svg>
+							</span>
+							<span class="mr-12 flex items-center text-gray-500">
+								status
+								<svg class="ml-1 h-5 w-5 fill-current" viewBox="0 0 24 24">
+									<path d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2 19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
+								</svg>
+							</span>
+							<span class="mr-16 flex items-center text-gray-500">
+								date
+								<svg class="ml-1 h-5 w-5 fill-current" viewBox="0 0 24 24">
+									<path
+											d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2
+										19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
+								</svg>
+							</span>
+						</div>
+					</div>
+				</div>
+			</main>
+			<div class="main-modal-account fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster"
+				 style="background: rgba(0,0,0,.7);">
+				<div class="border border-teal-500 shadow-lg modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+					<div class="modal-content py-4 text-left px-6">
+						<!--Title-->
+						<div class="flex justify-between items-center pb-3">
+							<p class="text-2xl font-bold">Set Account</p>
+							<div class="modal-close cursor-pointer z-50">
+								<svg onclick="modalClose('main-modal-account')" class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+									<path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+									</path>
+								</svg>
+							</div>
+						</div>
+						<!--Body-->
+						<div class="my-5">
+							<p>Enter the name of the account from which you want to batch download the images.</p>
+							<label for="accounts">
+								<input id="accounts" name="tags" value="jasp402">
+							</label>
+						</div>
+						<!--Footer-->
+						<div class="flex justify-end pt-2">
+							<button onclick="modalClose('main-modal-account')" class="focus:outline-none modal-close bg-green-400 p-2 m-2  rounded-lg text-white hover:bg-green-500" id="setAccount">
+								Accept
+							</button>
+							<button onclick="modalClose('main-modal-account')" class="focus:outline-none modal-close bg-gray-400 p-2 m-2 rounded-lg text-black hover:bg-gray-300">
+								Cancel
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="main-modal-login fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster" style="background: rgba(0,0,0,.7);">
+			<div class="border border-teal-500 shadow-lg modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+				<div class="modal-content py-4 text-left px-6">
+					<!--Title-->
+					<div class="flex justify-between items-center pb-3">
+						<p class="text-2xl font-bold">Set login</p>
+						<div class="modal-close cursor-pointer z-50">
+							<svg onclick="modalClose('main-modal-login')" class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+								<path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+								</path>
+							</svg>
+						</div>
+					</div>
+					<!--Body-->
+					<div class="my-5">
+						<p>
+							Some accounts are usually private, and you only have access by logging in. Enter your credentials
+							so that the bot can log in and view the account.
+						</p>
+						<form id="formLogin" class="w-full max-w-sm">
+							<div class="md:flex md:items-center mb-6 mt-6">
+								<div class="md:w-1/3">
+									<label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="login">
+										Username
+									</label>
+								</div>
+								<div class="md:w-2/3">
+									<input id="login" placeholder="username" type="text" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+								</div>
+							</div>
+							<div class="md:flex md:items-center mb-6">
+								<div class="md:w-1/3">
+									<label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="password">
+										Password
+									</label>
+								</div>
+								<div class="md:w-2/3">
+									<input type="password" id="password" placeholder="password" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+								</div>
+							</div>
+							<div class="flex justify-end pt-2">
+								<button type="submit" onclick="modalClose('main-modal-login')" class="focus:outline-none modal-close bg-green-400 p-2 m-2 rounded-lg text-white hover:bg-green-500" id="setLogin">
+									Accept
+								</button>
+								<button onclick="modalClose('main-modal-login')" class="focus:outline-none modal-close bg-gray-400 p-2 m-2 rounded-lg text-black hover:bg-gray-300">
+									Cancel
+								</button>
+							</div>
+						</form>
+					</div>
+					<!--Footer-->
+				</div>
+			</div>
+		</div>
+		</div>
+	<script>
+			let input = document.querySelector('input[name=tags]');
+			new Tagify(input);
 
-                <div class="mr-12 flex capitalize">
-                    <!-- Right side -->
+			const modalClose           = (selector) => {
+				const modal = document.querySelector(`.${selector}`);
+				modal.classList.remove('fadeIn');
+				modal.classList.add('fadeOut');
+				modal.style.display = 'none';
+			};
 
-                    <span class="mr-16 pr-2 flex items-center text-gray-500">
-						role
-						<svg
-                                class="ml-1 h-5 w-5 fill-current"
-                                viewBox="0 0 24 24">
-							<path
-                                    d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2
-								19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
-						</svg>
-					</span>
+			const openModal            = (selector) => {
+				let modal = document.querySelector(`.${selector}`);
+				modal.classList.remove('fadeOut');
+				modal.classList.add('fadeIn');
+				modal.style.display = 'flex';
+			};
 
-                    <span class="mr-12 flex items-center text-gray-500">
-						status
-						<svg
-                                class="ml-1 h-5 w-5 fill-current"
-                                viewBox="0 0 24 24">
-							<path
-                                    d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2
-								19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
-						</svg>
-					</span>
-                    <span class="mr-16 flex items-center text-gray-500">
-						date
-						<svg
-                                class="ml-1 h-5 w-5 fill-current"
-                                viewBox="0 0 24 24">
-							<path
-                                    d="M18 21l-4-4h3V7h-3l4-4 4 4h-3v10h3M2
-								19v-2h10v2M2 13v-2h7v2M2 7V5h4v2H2z"></path>
-						</svg>
-					</span>
-                </div>
+			const modalAccount         = document.querySelector('.main-modal-account');
+			const modalLogin           = document.querySelector('.main-modal-login');
 
-            </div>
-        </div>
-
-    </main>
-
-    <!-- main account -->
-    <div class="main-modal-account fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster"
-         style="background: rgba(0,0,0,.7);">
-        <div
-                class="border border-teal-500 shadow-lg modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
-            <div class="modal-content py-4 text-left px-6">
-                <!--Title-->
-                <div class="flex justify-between items-center pb-3">
-                    <p class="text-2xl font-bold">Set Account</p>
-                    <div class="modal-close cursor-pointer z-50">
-                        <svg onclick="modalClose('main-modal-account')"
-                             class="fill-current text-black"
-                             xmlns="http://www.w3.org/2000/svg"
-                             width="18"
-                             height="18"
-                             viewBox="0 0 18 18">
-                            <path
-                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
-                            </path>
-                        </svg>
-                    </div>
-                </div>
-                <!--Body-->
-                <div class="my-5">
-                    <p>Enter the name of the account from which you want to batch download the images.</p>
-                    <label for="accounts"><input id="accounts" name='tags' value='jasp402'></label>
-                </div>
-                <!--Footer-->
-                <div class="flex justify-end pt-2">
-                    <button
-                            onclick="modalClose('main-modal-account')"
-                            class="focus:outline-none modal-close bg-green-400 p-2 m-2  rounded-lg text-white hover:bg-green-500"
-                            id="setAccount">Accept
-                    </button>
-                    <button
-                            onclick="modalClose('main-modal-account')"
-                            class="focus:outline-none modal-close bg-gray-400 p-2 m-2 rounded-lg text-black hover:bg-gray-300">
-                        Cancel
-                    </button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="main-modal-login fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster"
-         style="background: rgba(0,0,0,.7);">
-        <div
-                class="border border-teal-500 shadow-lg modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
-            <div class="modal-content py-4 text-left px-6">
-                <!--Title-->
-                <div class="flex justify-between items-center pb-3">
-                    <p class="text-2xl font-bold">Set login</p>
-                    <div class="modal-close cursor-pointer z-50">
-                        <svg
-                                onclick="modalClose('main-modal-login')"
-                                class="fill-current text-black"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18">
-                            <path
-                                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
-                            </path>
-                        </svg>
-                    </div>
-                </div>
-                <!--Body-->
-                <div class="my-5">
-                    <p>Some accounts are usually private, and you only have access by logging in. Enter your credentials so that the bot can log in and view the account.</p>
-                    <form id='formLogin' class="w-full max-w-sm">
-                        <div class="md:flex md:items-center mb-6 mt-6">
-                            <div class="md:w-1/3">
-                                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                                       for="login">
-                                    Username
-                                </label>
-                            </div>
-                            <div class="md:w-2/3">
-                                <input id="login"
-                                       placeholder="username"
-                                       type="text"
-                                       class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-                            </div>
-                        </div>
-                        <div class="md:flex md:items-center mb-6">
-                            <div class="md:w-1/3">
-                                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                                       for="password">
-                                    Password
-                                </label>
-                            </div>
-                            <div class="md:w-2/3">
-                                <input type="password"
-                                       id="password"
-                                       placeholder="password"
-                                       class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-                            </div>
-                        </div>
-                        <div class="flex justify-end pt-2">
-
-                            <button type="submit"
-                                    onclick="modalClose('main-modal-login')"
-                                    class="focus:outline-none modal-close bg-green-400 p-2 m-2 rounded-lg text-white hover:bg-green-500"
-                                    id="setLogin">Accept
-                            </button>
-                            <button
-                                    onclick="modalClose('main-modal-login')"
-                                    class="focus:outline-none modal-close bg-gray-400 p-2 m-2 rounded-lg text-black hover:bg-gray-300">
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <!--Footer-->
-
-            </div>
-        </div>
-    </div>
-    <script>
-
-        let input = document.querySelector('input[name=tags]');
-        new Tagify(input);
-
-        const modalClose = (selector) => {
-            const modal = document.querySelector(`.${selector}`);
-            modal.classList.remove('fadeIn');
-            modal.classList.add('fadeOut');
-            modal.style.display = 'none';
-        };
-
-        const openModal = (selector) => {
-            let modal = document.querySelector(`.${selector}`);
-            modal.classList.remove('fadeOut');
-            modal.classList.add('fadeIn');
-            modal.style.display = 'flex';
-        };
-
-        const modalAccount = document.querySelector('.main-modal-account');
-        const modalLogin   = document.querySelector('.main-modal-login');
-
-        modalAccount.style.display = 'none';
-        modalLogin.style.display   = 'none';
-    </script>
-    <script src="./renderer.js" type="module"></script>
-</div>
-</body>
-
+			modalAccount.style.display = 'none';
+			modalLogin.style.display   = 'none';
+		</script>
+	<script src="./renderer.js" type="module"></script>
+	</body>
 </html>

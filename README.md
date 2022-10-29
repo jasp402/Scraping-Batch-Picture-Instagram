@@ -22,3 +22,7 @@ This software is designed to help you download images and videos from Instagram 
 2. Organize your downloads: This app lets you organize your downloads into separate lists so you can easily find them later.
 
 3. Download private
+
+
+Todo List:
+- [ ] "Al hacer clic en la campana debe mostrar las novedades de la aplicación"
