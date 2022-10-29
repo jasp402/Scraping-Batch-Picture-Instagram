@@ -4,7 +4,7 @@ const fs   = require('fs');
 const open = async(a,b,c,d) => {
     const browser = await puppeteer.launch({
         timeout : 999 * 1000,
-        headless: true
+        headless: false
     });
     const page    = (await browser.pages())[0];
     await page.setDefaultNavigationTimeout(0);
@@ -15,7 +15,7 @@ const open = async(a,b,c,d) => {
 
     await page.goto('https://instagram.com');
 
-    await page.screenshot({path: `${__dirname}/screenshot/${new Date().getTime()}_buddy-screenshot.png`});
+    // await page.screenshot({path: `${__dirname}/screenshot/${new Date().getTime()}_buddy-screenshot.png`});
 
     console.log('go to instagram');
 
@@ -35,7 +35,7 @@ const open = async(a,b,c,d) => {
     await submit.click();
 
     console.log('submit');
-
+    await page.waitFor(5000);
     let arAccounts = c.split(',');
 
     console.log('array to accounts', arAccounts);
@@ -46,13 +46,11 @@ const open = async(a,b,c,d) => {
         console.log('arAccounts', arAccounts[index]);
         await page.waitFor(4000);
         await page.goto('https://www.instagram.com/' + arAccounts[index] + '/');
-        await page.screenshot({path: `${__dirname}/screenshot/${new Date().getTime()}_buddy-screenshot.png`});
-        await page.waitFor('.DINPA');
+        // await page.screenshot({path: `${__dirname}/screenshot/${new Date().getTime()}_buddy-screenshot.png`});
+        await page.waitFor('header > section > ul >li > div');
 
-        let elHandle               = await page.$x('//*[@id="react-root"]/section/main/div/header/section/ul/li[1]/span');
-        let lamudiNewPropertyCount = await page.evaluate(el => el.textContent, elHandle[0]); //cantidad de registros
-
-        document.querySelector(`#${String(arAccounts[index]).replace(/\./g,'_')}-posts`).innerText = lamudiNewPropertyCount;
+        let header = await page.$eval('header > section > ul >li > div',elem => elem.innerText);
+        console.log(header); //33 publicaciones
 
         let firstImage = await page.$('article img');
         await firstImage.click();
@@ -64,9 +62,9 @@ const open = async(a,b,c,d) => {
                 await page.waitFor('body article[role="presentation"]');
 
                 let img = await page.$$eval('article[role="presentation"] img', el => el.map(x =>{
-                    let atr = x.getAttribute("src");
-
-                    return /_nc_cat/g.test(atr) ? atr : false;
+                    let src = x.getAttribute("src");
+                    let alt = x.getAttribute("alt");
+                    return (alt.indexOf('Foto del perfil')===0) ? false : src;
                 }).filter(Boolean));
 
                 let video = await page.$$eval('article[role="presentation"] video', el => el.map(x => x.getAttribute("src")));
@@ -76,8 +74,7 @@ const open = async(a,b,c,d) => {
 
                 getImgSrcAttr.push(img);
                 getImgSrcAttr.push(video);
-
-                let arrowRight = await page.waitForSelector('.coreSpriteRightPaginationArrow');
+                let arrowRight = await page.$('svg[aria-label="Siguiente"]');
                 await arrowRight.click();
                 console.log(page.url());
 

@@ -14,12 +14,12 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron": "1.7.8",
-    "electron-packager": "12.1.0"
+    "electron": "^21.2.0",
+    "electron-packager": "^17.0.0"
   },
   "dependencies": {
     "js-packtools": "^2.3.18",
-    "puppeteer": "1.0.0",
+    "puppeteer": "^1.20.0",
     "request": "latest",
     "sync-request": "6.1.0"
   }

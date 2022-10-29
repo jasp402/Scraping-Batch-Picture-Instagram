@@ -62,9 +62,9 @@ document.getElementById('dirs').addEventListener('click', () => {
 
 //get path as result with api electron
 ipcRenderer.on('variable-reply', function (event, args) {
-  dir = args ? args[0] : dir;
+    dir = args;
     let path  = document.getElementById('path');
-    path.innerText = '.../'+dir.split('\\').pop();
+    path.innerText = args;
 });
 
 document.querySelector('#setAccount').addEventListener('click', async () => {

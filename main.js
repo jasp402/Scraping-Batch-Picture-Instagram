@@ -10,20 +10,30 @@ const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const url = require('url')
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1400, height: 768})
+  mainWindow = new BrowserWindow({width: 1400, height: 768,
+      webPreferences: {
+    nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+  }
+
+  })
 
   // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
+  // mainWindow.loadURL(url.format({
+  //   pathname: path.join(__dirname, 'index.html'),
+  //   protocol: 'file:',
+  //   slashes: true
+  // }))
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
@@ -65,8 +75,16 @@ app.on('activate', function () {
 let dir;
 
 ipcMain.on('selectDirectory', function(event, arg) {
-  dir = dailog.showOpenDialog(mainWindow, {
-    properties: ['openDirectory']
+  dailog.showOpenDialog({properties: ['openDirectory'] }).then(function (response) {
+    if (!response.canceled) {
+      // handle fully qualified file name
+      console.log(response.filePaths[0]);
+      dir = response.filePaths[0];
+      event.sender.send('variable-reply', dir);
+    } else {
+      console.log("no file selected");
+    }
   });
-  event.sender.send('variable-reply', dir);
 });
+
+
