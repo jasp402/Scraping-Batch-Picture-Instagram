@@ -80,6 +80,11 @@ const open = async(a,b,c,d) => {
     }
 
     for(let index=0;index<arAccounts.length; ++index){
+
+        let postByAccount = document.getElementById(`${index}_post`);
+
+
+
         let getImgSrcAttr = [];
         console.log('arAccounts', arAccounts[index]);
         await page.waitFor(4000);
@@ -89,6 +94,7 @@ const open = async(a,b,c,d) => {
 
         let header = await page.$eval('header > section > ul >li > div',elem => elem.innerText);
         console.log(header); //33 publicaciones
+        postByAccount.innerText = header.split(' ')[0];
 
         let firstImage = await page.$('article img');
         await firstImage.click();
