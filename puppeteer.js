@@ -1,6 +1,17 @@
-const puppeteer = require('puppeteer');
+const puppeteer   = require('puppeteer');
 const jsPackTools = require('js-packtools')();
-const fs   = require('fs');
+const fs          = require('fs');
+async function getImageFetch(imgUrl, opts, pathSave=''){
+    let ext = /mp4/g.test(imgUrl) ? '.mp4' : '.jpg';
+    return await fetch(imgUrl, opts)
+        .then(res => res.arrayBuffer())
+        .then(response => {
+            console.log('---save');
+            fs.writeFileSync(pathSave + ext, Buffer.from(response));
+        })
+        .catch(console.error);
+}
+
 const open = async(a,b,c,d) => {
     const browser = await puppeteer.launch({
         timeout : 999 * 1000,
@@ -40,6 +51,33 @@ const open = async(a,b,c,d) => {
 
     console.log('array to accounts', arAccounts);
 
+    await page.waitFor('img');
+    let profileImg = await page.$$eval('img', el => el.map(x =>{
+        let src = x.getAttribute("src");
+        let alt = x.getAttribute("alt");
+        return alt.indexOf('Foto del perfil')===0 ? src : false;
+    }).filter(Boolean));
+    console.log(profileImg);
+
+    const arrayCookies = await page.cookies();
+    const cookie = arrayCookies.map(x => x.name + '=' + x.value).join(';');
+    const opts = {
+        method : "GET",
+        headers: {
+            'Cookie': cookie
+        },
+    };
+    if(profileImg){
+        await getImageFetch(profileImg, opts, 'tmp/profile');
+    }else{
+        console.log('Image profile not found');
+    }
+
+    let imgProfile = 'tmp/profile.jpg';
+    if(fs.existsSync(imgProfile)){
+        let userImg = document.getElementById('avatarImg');
+        userImg.src = 'tmp/profile.jpg'
+    }
 
     for(let index=0;index<arAccounts.length; ++index){
         let getImgSrcAttr = [];
@@ -101,6 +139,7 @@ const open = async(a,b,c,d) => {
         console.log(dir);
         jsPackTools.validateDir(dir);
         console.log(getImgSrc);
+
         getImgSrc.map(async (imgUrl, i) => {
             let ext = /mp4/g.test(imgUrl) ? '.mp4' : '.jpg';
             return await fetch(imgUrl, opts)
@@ -111,10 +150,12 @@ const open = async(a,b,c,d) => {
                 })
                 .catch(console.error);
         });
+
         nextWhile = true;
     }
-
 };
+
+
 
 module.exports = { open };
 

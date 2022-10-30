@@ -50,33 +50,49 @@ let dir = 'profiles';
 let user = undefined;
 let pass = undefined;
 let accounts = undefined;
-//AddEvent select Folder // get path with api electron
-document.getElementById('dirs').addEventListener('click', () => {
-  ipcRenderer.send('selectDirectory');
-});
 
 //get path as result with api electron
 ipcRenderer.on('variable-reply', function (event, args) {
     dir = args;
-    let path  = document.getElementById('path');
-    path.innerText = args;
+
+    let path       = document.getElementById('path');
+    let initPath   = args.split('\\').shift();
+    let endPath    = args.split('\\').pop();
+    let lengthPath = args.split('\\').length;
+
+    path.innerText = `${initPath}/${('../'.repeat(lengthPath))}${endPath}`;
+});
+
+document.getElementById('dirs').addEventListener('click', () => {
+  ipcRenderer.send('selectDirectory');
 });
 
 document.getElementById('formLogin').addEventListener('submit', (event) => {
     event.preventDefault();
     user = document.getElementById('login');
     pass = document.getElementById('password');
+
+    if (!user.value || !pass.value) {
+        return false;
+    }
+
+    let userName = document.getElementById('avatarName');
+    let userType = document.getElementById('avatarType');
+    let userImg  = document.getElementById('avatarImg');
+
+    userName.innerText = (user.value).toUpperCase();
+    userType.innerText = '👤 user common';
+    userImg.src = './assets/img/profile_empty.jpg';
 });
 
 document.querySelector('#setAccount').addEventListener('click', async () => {
     let arAccounts = JSON.parse(document.getElementById('accounts').value);
-
     accounts = arAccounts.map(d => d.value);
     console.log(accounts);
     console.log('-->',accounts);
     console.log('-->',dir);
 
-  //
+    wrapCard.innerHTML = '';
     accounts.forEach(c => {
         wrapCard.insertAdjacentHTML('beforeend', templateAccountCard([c]));
     });
@@ -85,6 +101,8 @@ document.querySelector('#setAccount').addEventListener('click', async () => {
     startDownload.classList.remove('opacity-50');
     startDownload.classList.remove('cursor-not-allowed');
 
+    let headerAccountNumber = document.querySelector('#headerAccountNumber');
+    headerAccountNumber.innerText = accounts.length;
 
   console.log('Started');
 });
