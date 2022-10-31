@@ -19,6 +19,6 @@
   },
   "dependencies": {
     "js-packtools": "^2.3.18",
-    "puppeteer": "^1.20.0"
+    "puppeteer": "^19.2.0"
   }
 }

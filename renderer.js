@@ -9,7 +9,7 @@ let accounts      = undefined;
 const templateAccountCard = (arg, index) => `
 <div class="border-2 border-rose-600 mt-8 flex px-4 py-4 justify-between bg-whitedark:bg-gray-600 shadow-xl rounded-lg cursor-pointer">
     <div class="flex justify-between">
-        <img id="profileImg" class="h-16 w-16 rounded-full object-cover" src="public/assets/img/profile_empty.jpg" alt="" />
+        <img id="${index}_profileImg" class="h-16 w-16 rounded-full object-cover" src="public/assets/img/profile_empty.jpg" alt="" />
         <div class="ml-4 flex flex-col capitalize text-gray-600dark:text-gray-400">
             <span class="font-semibold">Account</span>
             <span class="mt-2 text-black dark:text-gray-200">${arg[0]}</span>
@@ -92,7 +92,7 @@ document.querySelector('#formLogin').addEventListener('submit', (event) => {
 
     userName.innerText = (user.value).toUpperCase();
     userType.innerText = '👤 user common';
-    userImg.src = './assets/img/profile_empty.jpg';
+    userImg.src = './public/assets/img/profile_empty.jpg';
 });
 
 document.querySelector('#setAccount').addEventListener('click', async () => {

@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="public/assets/css/tailwind_1.4.6.css">
 		<link rel="stylesheet" href="public/assets/css/tagify.css">
 		<link rel="stylesheet" href="public/assets/css/progressBar.css">
+		<link rel="stylesheet" href="public/assets/css/styles.css">
 		<script src="public/assets/js/tagify.min.js"></script>
 	</head>
 	<body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
@@ -32,7 +33,16 @@
 				</div>
 				<!-- User info -->
 				<div class="mt-2">
-					<img id="avatarImg" class="rounded-full mx-auto md:mx-0 object-cover" src="public/assets/img/username.png" alt="profile"/>
+					<div class="user-header-wrapper">
+						<div class="user-header-inner">
+						  <div class="uh-left">
+							<div class="uh-image">
+								<img id="avatarImg" class="uh-image-inner rounded-full mx-auto md:mx-0 object-cover" src="public/assets/img/username.png" alt="profile"/>
+							  <div class="gradient"></div>
+							</div>
+						  </div>
+						</div>
+					</div>
 				</div>
 				<ul class="mt-2 text-gray-600">
 

@@ -1,9 +1,16 @@
-const puppeteer    = require('puppeteer');
-const jsPackTools = require('js-packtools')();
-const fs          = require('fs');
+const puppeteer               = require('puppeteer');
+const {validateDir, writeLog} = require('js-packtools')();
+const fs                      = require('fs');
 
-async function getImageFetch(imgUrl, opts, pathSave = '') {
-    let ext = /mp4/g.test(imgUrl) ? '.mp4' : '.jpg';
+async function getImageFetch(imgUrl, cookies, pathSave = '') {
+    const opts = {
+        method : "GET",
+        headers: {
+            'Cookie': cookies
+        },
+    };
+    const ext  = /mp4/g.test(imgUrl) ? '.mp4' : '.jpg';
+
     return fetch(imgUrl, opts)
         .then(res => res.arrayBuffer())
         .then(response => {
@@ -13,100 +20,118 @@ async function getImageFetch(imgUrl, opts, pathSave = '') {
         .catch(console.error);
 }
 
-const scraping = async(login, password, accounts, path) => {
-    const browser = await puppeteer.launch({
+const scraping = async (login, password, accounts, path) => {
+    const browser     = await puppeteer.launch({
         timeout : 999 * 1000,
         headless: false
     });
-    const page    = (await browser.pages())[0];
-    await page.setDefaultNavigationTimeout(0);
-    const flatArray = arr => [].concat(...arr);
-    let nextWhile   = true;
+    const page        = (await browser.pages())[0];
+    const flatArray   = arr => [].concat(...arr);
+    let nextWhile     = true;
+    let getImgSrcAttr = [];
+    let arAccounts    = accounts.split(',');
 
-    console.log('Open browser');
+    await page.setDefaultNavigationTimeout(0);
+    writeLog('Open browser');
 
     await page.goto('https://instagram.com');
+    writeLog('go to instagram');
 
-    console.log('go to instagram');
-
-    await page.waitFor('input[name="username"]');
-    await page.focus('input[name="username"]');
-    await page.keyboard.type('@' + login);
-
-    console.log('set username', login);
-
-    await page.waitFor('input[name="password"]');
-    await page.focus('input[name="password"]');
-    await page.keyboard.type(password);
-
-    console.log('set password', password);
-
-    const submit = await page.$('button[type="submit"]');
-    await submit.click();
-
-    console.log('submit');
-    await page.waitFor(5000);
-    let arAccounts = accounts.split(',');
-
-    console.log('array to accounts', arAccounts);
-
-    await page.waitFor('img');
-    let profileImg = await page.$$eval('img', el => el.map(x => {
-        let src = x.getAttribute("src");
-        let alt = x.getAttribute("alt");
-        return alt.indexOf('Foto del perfil') === 0 ? src : false;
-    }).filter(Boolean));
-    console.log(profileImg);
-
-    const arrayCookies = await page.cookies();
-    const cookie       = arrayCookies.map(x => x.name + '=' + x.value).join(';');
-    const opts         = {
-        method : "GET",
-        headers: {
-            'Cookie': cookie
-        },
-    };
-    if (profileImg.length > 0) {
-        await getImageFetch(profileImg, opts, 'tmp/profile');
-        let imgProfile = 'tmp/profile.jpg';
-
-        if (fs.existsSync(imgProfile)) {
-            let stats           = fs.statSync(imgProfile);
-            let fileSizeInBytes = stats.size;
-            console.log('fileSizeInBytes', fileSizeInBytes);
-            let userImg = document.getElementById('avatarImg');
-            userImg.src = 'tmp/profile.jpg'
-        }
-
-    } else {
-        console.log('Image profile not found');
+    const getCookies = async (page,) => {
+        const arrayCookies = await page.cookies();
+        return arrayCookies.map(x => x.name + '=' + x.value).join(';');
     }
 
+    const setLogin = async (login) => {
+        await page.waitForSelector('input[name="username"]');
+        await page.focus('input[name="username"]');
+        await page.keyboard.type('@' + login);
+        writeLog('set username', login);
+    }
+    await setLogin(login);
 
-    for (let index = 0; index < arAccounts.length; ++index) {
+    const setPassword = async (password) => {
+        await page.waitForSelector('input[name="password"]');
+        await page.focus('input[name="password"]');
+        await page.keyboard.type(password);
+        writeLog('set password', password);
+    }
+    await setPassword(password);
 
+    const clickSubmit = async () => {
+        const submit = await page.$('button[type="submit"]');
+        await submit.click();
+        writeLog('submit');
+    }
+    await clickSubmit();
+
+    const saveProfileImage = async () => {
+        let path    = 'tmp/profile';
+        let pathImg = 'tmp/profile.jpg';
+        let userImg = document.getElementById('avatarImg');
+
+        await page.waitForSelector('img', {visible: true, timeout: 30000});
+        await page.waitForTimeout(1000);
+
+        try {
+            let profileImgSrc = await page.$$eval('img', el => el.map(img => {
+                let alt = img.getAttribute("alt") || '';
+                return alt.indexOf('Foto del perfil') === 0 ? img.getAttribute("src") : false;
+            }).filter(Boolean));
+            if (profileImgSrc.length === 0) throw new Error('No profileImgSrc found');
+            let cookies = await getCookies(page);
+            await getImageFetch(profileImgSrc, cookies, path);
+            if (fs.existsSync(pathImg)) {
+                userImg.src = 'tmp/profile.jpg'
+            }
+        } catch (err) {
+            console.error('Image profile not found', '\n', err);
+        }
+    }
+    await saveProfileImage();
+
+    for (const arAccount of arAccounts) {
+        const index = arAccounts.indexOf(arAccount);
         let postByAccount = document.getElementById(`${index}_post`);
+        let profileAccount = document.getElementById(`${index}_profileImg`);
+        let progresBar = 0;
 
+        const gotoAccount = async () => {
+            console.log('scratching account:', arAccounts[index]);
+            await page.goto('https://www.instagram.com/' + arAccounts[index] + '/');
+            await page.waitForTimeout(1000);
+            await page.screenshot({path: `${__dirname}/screenshot/${new Date().getTime()}_buddy-screenshot.png`});
+        };
+        await gotoAccount();
 
-        let getImgSrcAttr = [];
-        console.log('arAccounts', arAccounts[index]);
-        await page.waitFor(4000);
-        await page.goto('https://www.instagram.com/' + arAccounts[index] + '/');
-        await page.screenshot({path: `${__dirname}/screenshot/${new Date().getTime()}_buddy-screenshot.png`});
-        await page.waitFor('header > section > ul >li > div');
+        const saveProfileImageAccount = async () => {
+            await page.waitForSelector('header > section > ul >li > div');
+            let imageHeader = await page.$eval('header img', elem => elem.getAttribute("src"));
+            let cookies = await getCookies(page);
+            await getImageFetch(imageHeader, cookies, `tmp/profile_account_${arAccount}`);
+            profileAccount.src = `tmp/profile_account_${arAccount}.jpg`;
+        };
+        await saveProfileImageAccount();
 
-        let header = await page.$eval('header > section > ul >li > div', elem => elem.innerText);
-        console.log(header); //33 publicaciones
-        postByAccount.innerText = header.split(' ')[0];
+        const getPostByAccount = async () => {
+            await page.waitForSelector('header > section > ul >li > div');
+            let header = await page.$eval('header > section > ul >li > div', $el => $el.innerText);
+            let numberPost = Number(header.split(' ')[0]);
+            postByAccount.innerText = numberPost;
+            console.log(numberPost, header); //33 publicaciones
+            return numberPost;
+        }
+        let posts = await getPostByAccount();
 
         let firstImage = await page.$('article img');
         await firstImage.click();
-        await page.waitFor(4000);
+        await page.waitForTimeout(1000);
 
-        while (nextWhile) {
+        for (let i = 0; i < posts; i++) {
+            console.log(i, posts);
             try {
-                await page.waitFor(4000);
-                await page.waitFor('body article[role="presentation"]');
+                await page.waitForTimeout(4000);
+                await page.waitForSelector('body article[role="presentation"]');
 
                 let img = await page.$$eval('article[role="presentation"] img', el => el.map(x => {
                     let src = x.getAttribute("src");
@@ -121,45 +146,36 @@ const scraping = async(login, password, accounts, path) => {
 
                 getImgSrcAttr.push(img);
                 getImgSrcAttr.push(video);
-                let arrowRight = await page.$('svg[aria-label="Siguiente"]');
-                await arrowRight.click();
-                console.log(page.url());
+
+                if(i < (posts-1)){
+                    let arrowRight = await page.$('svg[aria-label="Siguiente"]');
+                    await arrowRight.click();
+                    console.log(page.url());
+                }
+
+                progresBar = Math.floor(i * 100 / posts);
+                incrementProcessBar(index, progresBar);
 
             } catch (error) {
-                nextWhile = false;
                 console.log("Catch Error:", error)
             }
-
-
         }
 
         console.log(getImgSrcAttr);
-        let getImgSrc      = flatArray(getImgSrcAttr);
-        const arrayCookies = await page.cookies();
-        const cookie       = arrayCookies.map(x => x.name + '=' + x.value).join(';');
-        const opts         = {
-            method : "GET",
-            headers: {
-                'Cookie': cookie
-            },
-        };
-        let dir            = path + '/' + arAccounts[index] + '/';
+        let getImgSrc = flatArray(getImgSrcAttr);
+        let cookies   = await getCookies(page);
+        let dir       = path + '/' + arAccounts[index] + '/';
+
         console.log(dir);
-        jsPackTools.validateDir(dir);
+        validateDir(dir);
         console.log(getImgSrc);
 
-        getImgSrc.map(async (imgUrl, i) => {
-            let ext = /mp4/g.test(imgUrl) ? '.mp4' : '.jpg';
-            return fetch(imgUrl, opts)
-                .then(res => res.arrayBuffer())
-                .then(response => {
-                    console.log('---save');
-                    fs.writeFileSync(dir + i + ext, Buffer.from(response));
-                })
-                .catch(console.error);
+        getImgSrc.map(async (imgUrl, j) => {
+            await getImageFetch(imgUrl, cookies, `${dir}_${j}`);
         });
 
-        nextWhile = true;
+        progresBar = Math.floor(posts * 100 / posts);
+        incrementProcessBar(index, progresBar);
     }
 }
-module.exports = { scraping };
+module.exports = {scraping};
