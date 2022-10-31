@@ -5,9 +5,11 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="assets/css/tailwind_1.4.6.css">
-		<link rel="stylesheet" href="assets/css/tagify.css">
-		<script src="./assets/js/tagify.min.js"></script>
+	    <link rel="stylesheet" href="public/plugins/fontawesome-free-6.2.0-web/css/all.css">
+		<link rel="stylesheet" href="public/assets/css/tailwind_1.4.6.css">
+		<link rel="stylesheet" href="public/assets/css/tagify.css">
+		<link rel="stylesheet" href="public/assets/css/progressBar.css">
+		<script src="public/assets/js/tagify.min.js"></script>
 	</head>
 	<body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
 		<div class="h-screen w-full flex overflow-hidden">
@@ -30,7 +32,7 @@
 				</div>
 				<!-- User info -->
 				<div class="mt-2">
-					<img id="avatarImg" class="rounded-full mx-auto md:mx-0 object-cover" src="assets/img/username.png" alt="profile"/>
+					<img id="avatarImg" class="rounded-full mx-auto md:mx-0 object-cover" src="public/assets/img/username.png" alt="profile"/>
 				</div>
 				<ul class="mt-2 text-gray-600">
 
@@ -90,7 +92,7 @@
 
 			</nav>
 			<!-- /SideNavBar -->
-			<main class="flex-1 flex flex-col bg-gray-100 dark:bg-gray-700 transition duration-500 ease-in-out overflow-y-auto">
+			<main class="flex-1 flex flex-col bg-gray-100 dark:bg-gray-700 transition duration-500 ease-in-out">
 				<div class="mx-10 my-2">
 					<nav aria-label="wrapCard" class="flex flex-row justify-between border-b dark:border-gray-600 dark:text-gray-400 transition duration-500 ease-in-out">
 						<div class="flex">
@@ -106,7 +108,6 @@
 								ScreenShot
 							</button>
 						</div>
-
 						<div class="flex items-center select-none">
 							<div class="mt-auto flex items-center text-red-700 dark:text-red-400">
 								<!-- important action -->
@@ -119,9 +120,13 @@
 							</div>
 						</div>
 					</nav>
-					<h2 class="my-4 text-4xl font-semibold dark:text-gray-400">
-						Accounts Backup
-					</h2>
+					<div class="md:flex">
+						<img class="object-contain h-auto w-12" src="public/assets/img/database.png" alt="database_icon"/>
+						<h2 class="ml-2 my-4 text-4xl font-semibold dark:text-gray-400">
+							Accounts Backup
+						</h2>
+					</div>
+
 					<div class="pb-2 flex items-center justify-between text-gray-600 dark:text-gray-400 border-b dark:border-gray-600">
 						<!-- Header -->
 						<div>
@@ -129,25 +134,29 @@
 								<span id="headerAccountNumber" class="text-green-500 dark:text-green-200">
 									0
 								</span>
+								<i class="fa-regular fa-id-card"></i>
 								Accounts
 							</span>
 							<span class="mx-4">
 								<span id="headerPictureNumber" class="text-green-500 dark:text-green-200">
 									0
 								</span>
+								<i class="fa-regular fa-image"></i>
 								Pictures
 							</span>
 							<span class="mx-4">
 								<span id="headerVideNumber" class="text-green-500 dark:text-green-200">
 									0
 								</span>
+								<i class="fa-solid fa-film"></i>
 								Videos
 							</span>
 						</div>
 					</div>
-					<!--list accounts-->
-					<div id="wrapCard">
-					</div>
+
+				</div>
+				<!--list accounts-->
+				<div id="wrapCard" class="overflow-y-auto max-h-screen m-5">
 				</div>
 			</main>
 			<div class="main-modal-account fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster"
@@ -239,7 +248,7 @@
 			</div>
 		</div>
 		</div>
-		<script src="./assets/js/main.js"></script>
-		<script src="./renderer.js" type="module"></script>
+		<script src="public/assets/js/main.js"></script>
+		<script src="renderer.js" type="module"></script>
 	</body>
 </html>

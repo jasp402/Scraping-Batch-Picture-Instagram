@@ -30,7 +30,6 @@ function activeBtnDownload() {
     btnDownload.classList.remove('cursor-not-allowed');
 }
 
-
 function modalClose(selector){
     const modal = document.querySelector(`.${selector}`);
     modal.classList.remove('fadeIn');
@@ -42,6 +41,11 @@ function openModal(selector){
     modal.classList.remove('fadeOut');
     modal.classList.add('fadeIn');
     modal.style.display = 'flex';
+}
+
+function incrementProcessBar(id, average){
+    document.querySelector(`.pbar-${id} #counter`).innerHTML = (average+'%');
+    document.querySelector(`.pbar-${id}.load-bar-inner`).style.width = (average+'%');
 }
 
 disabledBtnAcceptSetLogin();

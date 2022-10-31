@@ -6,7 +6,7 @@ This an open source project that celebrates internal and external contributions.
 
 **Tailwind Users Dashboard** https://tailwindcomponents.com/component/tailwind-users-dashboard
 <br>
-**electron-puppeteer** https://github.com/luanpotter/electron-puppeteer
+**electron-scraping** https://github.com/luanpotter/electron-scraping
 
 
 If you're looking for a way to download images and videos from Instagram profiles, then you need the Instagram Image and Video Downloader app. This app allows you to create a list of profiles to download from, and it will download them one by one. You can also log in to Instagram

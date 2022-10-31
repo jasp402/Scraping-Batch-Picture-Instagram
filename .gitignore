@@ -3,3 +3,4 @@ build
 /.idea/
 /package-lock.json
 /profiles/
+/public/plugins/fontawesome-free-6.2.0-web/
