@@ -23,7 +23,8 @@ async function getImageFetch(imgUrl, cookies, pathSave = '') {
 const scraping = async (login, password, accounts, path) => {
     const browser     = await puppeteer.launch({
         timeout : 999 * 1000,
-        headless: false
+        headless: false,
+        executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
     });
     const page        = (await browser.pages())[0];
     const flatArray   = arr => [].concat(...arr);
