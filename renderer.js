@@ -90,14 +90,18 @@ document.querySelector('#formLogin').addEventListener('submit', (event) => {
     let userType = document.getElementById('avatarType');
     let userImg  = document.getElementById('avatarImg');
 
+    loginValue = user.value
+    passwordValue = user.password;
+
     userName.innerText = (user.value).toUpperCase();
     userType.innerText = '👤 user common';
     userImg.src = './public/assets/img/profile_empty.jpg';
+
+    modalClose('main-modal-login');
 });
 
 document.querySelector('#setAccount').addEventListener('click', async () => {
     modalClose('main-modal-account');
-
     let $elAccounts = document.querySelector('#accounts');
     let arAccounts  = JSON.parse($elAccounts.value);
         accounts    = arAccounts.map(d => d.value);
@@ -113,5 +117,7 @@ document.querySelector('#setAccount').addEventListener('click', async () => {
 
     let headerAccountNumber = document.querySelector('#headerAccountNumber');
         headerAccountNumber.innerText = accounts.length;
+
+
 });
 

@@ -3,7 +3,11 @@ let btnAcceptSetLogin = document.querySelector('#setLogin');
 let btnDownload       = document.querySelector('#btnDownload');
 let login             = document.querySelector('#login');
 let password          = document.querySelector('#password');
+let formLogin         = document.querySelector('#formLogin');
+let avatarName        = document.querySelector('#avatarName');
 
+let loginValue    = undefined;
+let passwordValue = undefined;
 
 new Tagify(input);
 
@@ -31,6 +35,14 @@ function activeBtnDownload() {
 }
 
 function modalClose(selector){
+    if(selector === 'main-modal-login'){
+        if(avatarName.innerText === 'InstamBackup'){
+            formLogin.reset();
+        }else{
+            login.value = loginValue;
+            password.value = passwordValue;
+        }
+    }
     const modal = document.querySelector(`.${selector}`);
     modal.classList.remove('fadeIn');
     modal.classList.add('fadeOut');
