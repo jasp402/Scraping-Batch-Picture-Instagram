@@ -27,7 +27,6 @@ const scraping = async (login, password, accounts, path) => {
     });
     const page        = (await browser.pages())[0];
     const flatArray   = arr => [].concat(...arr);
-    let nextWhile     = true;
     let getImgSrcAttr = [];
     let arAccounts    = accounts.split(',');
 
@@ -91,32 +90,32 @@ const scraping = async (login, password, accounts, path) => {
     await saveProfileImage();
 
     for (const arAccount of arAccounts) {
-        const index = arAccounts.indexOf(arAccount);
-        let postByAccount = document.getElementById(`${index}_post`);
+        const index        = arAccounts.indexOf(arAccount);
+        let postByAccount  = document.getElementById(`${index}_post`);
         let profileAccount = document.getElementById(`${index}_profileImg`);
-        let progresBar = 0;
+        let progresBar     = 0;
 
         const gotoAccount = async () => {
             console.log('scratching account:', arAccounts[index]);
             await page.goto('https://www.instagram.com/' + arAccounts[index] + '/');
             await page.waitForTimeout(1000);
-            await page.screenshot({path: `${__dirname}/screenshot/${new Date().getTime()}_buddy-screenshot.png`});
         };
         await gotoAccount();
 
         const saveProfileImageAccount = async () => {
             await page.waitForSelector('header > section > ul >li > div');
             let imageHeader = await page.$eval('header img', elem => elem.getAttribute("src"));
-            let cookies = await getCookies(page);
+            let cookies     = await getCookies(page);
             await getImageFetch(imageHeader, cookies, `tmp/profile_account_${arAccount}`);
             profileAccount.src = `tmp/profile_account_${arAccount}.jpg`;
+            await page.screenshot({path: `${__dirname}/screenshot/${new Date().getTime()}_buddy-screenshot.png`});
         };
         await saveProfileImageAccount();
 
         const getPostByAccount = async () => {
             await page.waitForSelector('header > section > ul >li > div');
-            let header = await page.$eval('header > section > ul >li > div', $el => $el.innerText);
-            let numberPost = Number(header.split(' ')[0]);
+            let header              = await page.$eval('header > section > ul >li > div', $el => $el.innerText);
+            let numberPost          = Number(header.split(' ')[0]);
             postByAccount.innerText = numberPost;
             console.log(numberPost, header); //33 publicaciones
             return numberPost;
@@ -147,7 +146,7 @@ const scraping = async (login, password, accounts, path) => {
                 getImgSrcAttr.push(img);
                 getImgSrcAttr.push(video);
 
-                if(i < (posts-1)){
+                if (i < (posts - 1)) {
                     let arrowRight = await page.$('svg[aria-label="Siguiente"]');
                     await arrowRight.click();
                     console.log(page.url());
