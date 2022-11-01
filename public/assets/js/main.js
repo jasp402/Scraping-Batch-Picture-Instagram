@@ -57,7 +57,7 @@ modalAccount.style.display = 'none';
 const modalLogin   = document.querySelector('.main-modal-login');
 modalLogin.style.display   = 'none';
 
-login.addEventListener('change', function (e) {
+login.addEventListener('keyup', function (e) {
     disabledBtnAcceptSetLogin();
     disabledBtnDownload();
 
@@ -69,7 +69,7 @@ login.addEventListener('change', function (e) {
         }
     }
 });
-password.addEventListener('change', function (e) {
+password.addEventListener('keyup', function (e) {
     disabledBtnAcceptSetLogin();
     disabledBtnDownload();
 
