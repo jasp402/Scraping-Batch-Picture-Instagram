@@ -2,9 +2,7 @@ const {scraping}  = require('./scraping.js');
 const ipcRenderer = require('electron').ipcRenderer;
 let wrapCard      = document.getElementById('wrapCard');
 let dir           = 'profiles';
-let user          = undefined;
-let pass          = undefined;
-let accounts      = undefined;
+let user, pass, accounts;
 
 const templateAccountCard = (arg, index) => `
 <div class="border-2 border-rose-600 mt-8 flex px-4 py-4 justify-between bg-whitedark:bg-gray-600 shadow-xl rounded-lg cursor-pointer">
@@ -73,16 +71,12 @@ document.querySelector('#btnAddAccount').addEventListener('click', () => {
     openModal('main-modal-account');
 });
 
-document.querySelector('#btnDownload').addEventListener('click', async () => {
-    await scraping(user.value, pass.value, accounts.join(','), dir);
-});
-
 document.querySelector('#formLogin').addEventListener('submit', (event) => {
     event.preventDefault();
-    user = document.getElementById('login');
-    pass = document.getElementById('password');
+    user = document.getElementById('login').value;
+    pass = document.getElementById('password').value;
 
-    if (!user.value || !pass.value) {
+    if (!user || !pass) {
         return false;
     }
 
@@ -90,10 +84,8 @@ document.querySelector('#formLogin').addEventListener('submit', (event) => {
     let userType = document.getElementById('avatarType');
     let userImg  = document.getElementById('avatarImg');
 
-    loginValue = user.value
-    passwordValue = user.password;
 
-    userName.innerText = (user.value).toUpperCase();
+    userName.innerText = (user).toUpperCase();
     userType.innerText = '👤 user common';
     userImg.src = './public/assets/img/profile_empty.jpg';
 
@@ -111,7 +103,7 @@ document.querySelector('#setAccount').addEventListener('click', async () => {
         wrapCard.insertAdjacentHTML('beforeend', templateAccountCard([account], index));
     });
 
-    if(login.value && password.value && $elAccounts.value){
+    if(user && pass && accounts.length > 0){
         activeBtnDownload();
     }
 
@@ -121,3 +113,6 @@ document.querySelector('#setAccount').addEventListener('click', async () => {
 
 });
 
+document.querySelector('#btnDownload').addEventListener('click', async () => {
+    await scraping(user, pass, accounts.join(','), dir);
+});
